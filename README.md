@@ -1,7 +1,6 @@
 # nautobot-plugin-prometheus-sd
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![CI](https://github.com/FlxPeters/netbox-plugin-prometheus-sd/workflows/CI/badge.svg?event=push)](https://github.com/FlxPeters/netbox-plugin-prometheus-sd/actions?query=workflow%3ACI)
 Provide Prometheus http_sd compatible API Endpoint with data from Nautobot.
 
 HTTP SD is a new feature in Prometheus 2.28.0 that allows hosts to be found via a URL instead of just files.
