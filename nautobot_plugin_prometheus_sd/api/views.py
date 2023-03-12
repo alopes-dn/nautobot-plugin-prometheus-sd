@@ -44,8 +44,6 @@ class DeviceViewSet(NautobotModelViewSet):  # pylint: disable=too-many-ancestors
         "rack",
         "parent_bay",
         "virtual_chassis__master",
-        "primary_ip4__nat_outside",
-        "primary_ip6__nat_outside",
         "tags",
     )
     filterset_class = DeviceFilterSet
