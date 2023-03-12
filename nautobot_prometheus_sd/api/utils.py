@@ -15,7 +15,7 @@ class LabelDict(dict):
     def get_labels(self):
         """Prefix and replace invalid key chars for prometheus labels"""
         return {
-            "__meta_netbox_" + str(self.promsafestr(key)): val
+            "__meta_nautobot_" + str(self.promsafestr(key)): val
             for key, val in self.items()
         }
 
