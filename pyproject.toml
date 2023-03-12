@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "nautobot-prometheus-sd"
+name = "nautobot-plugin-prometheus-sd"
 version = "0.1.0"
 description = "Nautobot prometheus service discovery"
 authors = ["André Lopes <alopes@drivenets.com>"]
