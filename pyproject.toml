@@ -11,7 +11,7 @@ include = [
     "README.md",
 ]
 packages = [
-    { include = "nautobot_prometheus_sd" },
+    { include = "nautobot_plugin_prometheus_sd" },
 ]
 
 [tool.poetry.dependencies]

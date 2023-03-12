@@ -33,13 +33,13 @@ def is_truthy(arg):
 
 
 # Use pyinvoke configuration for default values, see http://docs.pyinvoke.org/en/stable/concepts/configuration.html
-# Variables may be overwritten in invoke.yml or by the environment variables INVOKE_nautobot_prometheus_sd_xxx
-namespace = Collection("nautobot_prometheus_sd")
+# Variables may be overwritten in invoke.yml or by the environment variables INVOKE_nautobot_plugin_prometheus_sd_xxx
+namespace = Collection("nautobot_plugin_prometheus_sd")
 namespace.configure(
     {
-        "nautobot_prometheus_sd": {
+        "nautobot_plugin_prometheus_sd": {
             "nautobot_ver": "1.4.2",
-            "project_name": "nautobot_prometheus_sd",
+            "project_name": "nautobot_plugin_prometheus_sd",
             "python_ver": "3.8",
             "local": False,
             "compose_dir": os.path.join(os.path.dirname(__file__), "development"),
@@ -85,13 +85,13 @@ def docker_compose(context, command, **kwargs):
     build_env = {
         # Note: 'docker-compose logs' will stop following after 60 seconds by default,
         # so we are overriding that by setting this environment variable.
-        "COMPOSE_HTTP_TIMEOUT": context.nautobot_prometheus_sd.compose_http_timeout,
-        "NAUTOBOT_VER": context.nautobot_prometheus_sd.nautobot_ver,
-        "PYTHON_VER": context.nautobot_prometheus_sd.python_ver,
+        "COMPOSE_HTTP_TIMEOUT": context.nautobot_plugin_prometheus_sd.compose_http_timeout,
+        "NAUTOBOT_VER": context.nautobot_plugin_prometheus_sd.nautobot_ver,
+        "PYTHON_VER": context.nautobot_plugin_prometheus_sd.python_ver,
     }
-    compose_command = f'docker-compose --project-name {context.nautobot_prometheus_sd.project_name} --project-directory "{context.nautobot_prometheus_sd.compose_dir}"'
-    for compose_file in context.nautobot_prometheus_sd.compose_files:
-        compose_file_path = os.path.join(context.nautobot_prometheus_sd.compose_dir, compose_file)
+    compose_command = f'docker-compose --project-name {context.nautobot_plugin_prometheus_sd.project_name} --project-directory "{context.nautobot_plugin_prometheus_sd.compose_dir}"'
+    for compose_file in context.nautobot_plugin_prometheus_sd.compose_files:
+        compose_file_path = os.path.join(context.nautobot_plugin_prometheus_sd.compose_dir, compose_file)
         compose_command += f' -f "{compose_file_path}"'
     compose_command += f" {command}"
     print(f'Running docker-compose command "{command}"')
@@ -100,7 +100,7 @@ def docker_compose(context, command, **kwargs):
 
 def run_command(context, command, **kwargs):
     """Wrapper to run a command locally or inside the nautobot container."""
-    if is_truthy(context.nautobot_prometheus_sd.local):
+    if is_truthy(context.nautobot_plugin_prometheus_sd.local):
         context.run(command, **kwargs)
     else:
         # Check if nautobot is running, no need to start another nautobot container to run a command
@@ -132,7 +132,7 @@ def build(context, force_rm=False, cache=True):
     if force_rm:
         command += " --force-rm"
 
-    print(f"Building Nautobot with Python {context.nautobot_prometheus_sd.python_ver}...")
+    print(f"Building Nautobot with Python {context.nautobot_plugin_prometheus_sd.python_ver}...")
     docker_compose(context, command)
 
 
@@ -251,7 +251,7 @@ def createsuperuser(context, user="admin"):
 )
 def makemigrations(context, name=""):
     """Perform makemigrations operation in Django."""
-    command = "nautobot-server makemigrations nautobot_prometheus_sd"
+    command = "nautobot-server makemigrations nautobot_plugin_prometheus_sd"
 
     if name:
         command += f" --name {name}"
