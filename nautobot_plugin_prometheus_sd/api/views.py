@@ -1,21 +1,18 @@
-from nautobot.ipam.models import IPAddress
-from nautobot.virtualization.models import VirtualMachine
-from nautobot.dcim.models.devices import Device
-from nautobot.extras.api.views import CustomFieldModelViewSet as NautobotModelViewSet
-from nautobot.ipam.filters import IPAddressFilterSet
 from nautobot.dcim.filters import DeviceFilterSet
+from nautobot.dcim.models.devices import Device
+from nautobot.extras.api.views import \
+    CustomFieldModelViewSet as NautobotModelViewSet
+from nautobot.ipam.filters import IPAddressFilterSet
+from nautobot.ipam.models import IPAddress
 from nautobot.virtualization.filters import VirtualMachineFilterSet
+from nautobot.virtualization.models import VirtualMachine
 
-from .serializers import (
-    PrometheusIPAddressSerializer,
-    PrometheusDeviceSerializer,
-    PrometheusVirtualMachineSerializer,
-)
+from .serializers import (PrometheusDeviceSerializer,
+                          PrometheusIPAddressSerializer,
+                          PrometheusVirtualMachineSerializer)
 
 
-class VirtualMachineViewSet(
-    NautobotModelViewSet
-):  # pylint: disable=too-many-ancestors
+class VirtualMachineViewSet(NautobotModelViewSet):  # pylint: disable=too-many-ancestors
     queryset = VirtualMachine.objects.prefetch_related(
         "cluster__site",
         "role",
@@ -26,7 +23,6 @@ class VirtualMachineViewSet(
         "tags",
         "services",
         "contacts",
-
     )
     filterset_class = VirtualMachineFilterSet
     serializer_class = PrometheusVirtualMachineSerializer
@@ -40,7 +36,7 @@ class DeviceViewSet(NautobotModelViewSet):  # pylint: disable=too-many-ancestors
         "tenant",
         "platform",
         "site",
-        "region",
+        # "region",
         "location",
         "rack",
         "parent_bay",
