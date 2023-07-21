@@ -40,6 +40,7 @@ class DeviceViewSet(NautobotModelViewSet):  # pylint: disable=too-many-ancestors
         "tenant",
         "platform",
         "site",
+        "region",
         "location",
         "rack",
         "parent_bay",

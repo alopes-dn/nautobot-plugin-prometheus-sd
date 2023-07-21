@@ -19,12 +19,10 @@ class PrometheusDeviceSerializer(serializers.ModelSerializer):
     labels = serializers.SerializerMethodField()
 
     def get_targets(self, obj):
-        return [obj.name]
+        return [obj.primary_ip]
 
     def get_labels(self, obj):
-        labels = LabelDict(
-            {"model": obj.__class__.__name__, "name": obj.name, "id": obj.id}
-        )
+        labels = LabelDict({"model": obj.__class__.__name__, "name": obj.name, "id": obj.id})
 
         utils.extract_primary_ip(obj, labels)
         utils.extracts_platform(obj, labels)
@@ -46,6 +44,10 @@ class PrometheusDeviceSerializer(serializers.ModelSerializer):
         if hasattr(obj, "site") and obj.site is not None:
             labels["site"] = obj.site.name
             labels["site_slug"] = obj.site.slug
+
+        if hasattr(obj, "region") and obj.region is not None:
+            labels["region"] = obj.region.name
+            labels["region_slug"] = obj.region.slug
 
         return labels.get_labels()
 
