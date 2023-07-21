@@ -19,7 +19,8 @@ class PrometheusDeviceSerializer(serializers.ModelSerializer):
     labels = serializers.SerializerMethodField()
 
     def get_targets(self, obj):
-        return [obj.primary_ip]
+        if obj.primary_ip4:
+            return [str(IPNetwork(obj.primary_ip4.address).ip)]
 
     def get_labels(self, obj):
         labels = LabelDict({"model": obj.__class__.__name__, "name": obj.name, "id": obj.id})
@@ -44,42 +45,6 @@ class PrometheusDeviceSerializer(serializers.ModelSerializer):
         if hasattr(obj, "site") and obj.site is not None:
             labels["site"] = obj.site.name
             labels["site_slug"] = obj.site.slug
-
-        # if hasattr(obj, "region") and obj.region is not None:
-        #     labels["region"] = obj.region.name
-        #     labels["region_slug"] = obj.region.slug
-
-        return labels.get_labels()
-
-
-class PrometheusVirtualMachineSerializer(serializers.ModelSerializer):
-    """Serialize a virtual machine to Prometheus target representation"""
-
-    class Meta:
-        model = VirtualMachine
-        fields = ["targets", "labels"]
-
-    targets = serializers.SerializerMethodField()
-    labels = serializers.SerializerMethodField()
-
-    def get_targets(self, obj):
-        return [obj.name]
-
-    def get_labels(self, obj):
-        labels = LabelDict({"status": obj.status, "model": obj.__class__.__name__, "name": obj.name, "id": obj.id})
-
-        utils.extract_primary_ip(obj, labels)
-        utils.extracts_platform(obj, labels)
-        utils.extract_tags(obj, labels)
-        utils.extract_tenant(obj, labels)
-        utils.extract_cluster(obj, labels)
-        utils.extract_services(obj, labels)
-        utils.extract_contacts(obj, labels)
-        utils.extract_custom_fields(obj, labels)
-
-        if hasattr(obj, "role") and obj.role is not None:
-            labels["role"] = obj.role.name
-            labels["role_slug"] = obj.role.slug
 
         return labels.get_labels()
 

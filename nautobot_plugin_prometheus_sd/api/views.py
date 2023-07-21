@@ -4,29 +4,9 @@ from nautobot.extras.api.views import \
     CustomFieldModelViewSet as NautobotModelViewSet
 from nautobot.ipam.filters import IPAddressFilterSet
 from nautobot.ipam.models import IPAddress
-from nautobot.virtualization.filters import VirtualMachineFilterSet
-from nautobot.virtualization.models import VirtualMachine
 
 from .serializers import (PrometheusDeviceSerializer,
-                          PrometheusIPAddressSerializer,
-                          PrometheusVirtualMachineSerializer)
-
-
-class VirtualMachineViewSet(NautobotModelViewSet):  # pylint: disable=too-many-ancestors
-    queryset = VirtualMachine.objects.prefetch_related(
-        "cluster__site",
-        "role",
-        "tenant",
-        "platform",
-        "primary_ip4",
-        "primary_ip6",
-        "tags",
-        "services",
-        "contacts",
-    )
-    filterset_class = VirtualMachineFilterSet
-    serializer_class = PrometheusVirtualMachineSerializer
-    pagination_class = None
+                          PrometheusIPAddressSerializer)
 
 
 class DeviceViewSet(NautobotModelViewSet):  # pylint: disable=too-many-ancestors
