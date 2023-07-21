@@ -48,36 +48,35 @@ class PrometheusDeviceSerializer(serializers.ModelSerializer):
 
         return labels.get_labels()
 
+# class PrometheusIPAddressSerializer(serializers.ModelSerializer):
+#     """Serialize an IP address to Prometheus target representation"""
 
-class PrometheusIPAddressSerializer(serializers.ModelSerializer):
-    """Serialize an IP address to Prometheus target representation"""
+#     class Meta:
+#         model = IPAddress
+#         fields = ["targets", "labels"]
 
-    class Meta:
-        model = IPAddress
-        fields = ["targets", "labels"]
+#     targets = serializers.SerializerMethodField()
+#     labels = serializers.SerializerMethodField()
 
-    targets = serializers.SerializerMethodField()
-    labels = serializers.SerializerMethodField()
+#     def extract_ip(self, obj):
+#         return str(IPNetwork(obj.address).ip)
 
-    def extract_ip(self, obj):
-        return str(IPNetwork(obj.address).ip)
+#     def get_targets(self, obj):
+#         if obj.dns_name:
+#             return [obj.dns_name]
 
-    def get_targets(self, obj):
-        if obj.dns_name:
-            return [obj.dns_name]
+#         return [self.extract_ip(obj)]
 
-        return [self.extract_ip(obj)]
+#     def get_labels(self, obj):
+#         """Get IP address labels"""
+#         labels = LabelDict(
+#             {"status": obj.status, "model": obj.__class__.__name__, "ip": self.extract_ip(obj), "id": obj.id}
+#         )
+#         if obj.role:
+#             labels["role"] = obj.role
 
-    def get_labels(self, obj):
-        """Get IP address labels"""
-        labels = LabelDict(
-            {"status": obj.status, "model": obj.__class__.__name__, "ip": self.extract_ip(obj), "id": obj.id}
-        )
-        if obj.role:
-            labels["role"] = obj.role
+#         utils.extract_tags(obj, labels)
+#         utils.extract_tenant(obj, labels)
+#         utils.extract_custom_fields(obj, labels)
 
-        utils.extract_tags(obj, labels)
-        utils.extract_tenant(obj, labels)
-        utils.extract_custom_fields(obj, labels)
-
-        return labels.get_labels()
+#         return labels.get_labels()

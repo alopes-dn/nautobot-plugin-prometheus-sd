@@ -5,8 +5,7 @@ from nautobot.extras.api.views import \
 from nautobot.ipam.filters import IPAddressFilterSet
 from nautobot.ipam.models import IPAddress
 
-from .serializers import (PrometheusDeviceSerializer,
-                          PrometheusIPAddressSerializer)
+from .serializers import PrometheusDeviceSerializer
 
 
 class DeviceViewSet(NautobotModelViewSet):  # pylint: disable=too-many-ancestors
@@ -28,8 +27,8 @@ class DeviceViewSet(NautobotModelViewSet):  # pylint: disable=too-many-ancestors
     pagination_class = None
 
 
-class IPAddressViewSet(NautobotModelViewSet):  # pylint: disable=too-many-ancestors
-    queryset = IPAddress.objects.prefetch_related("tenant", "tags")
-    serializer_class = PrometheusIPAddressSerializer
-    filterset_class = IPAddressFilterSet
-    pagination_class = None
+# class IPAddressViewSet(NautobotModelViewSet):  # pylint: disable=too-many-ancestors
+#     queryset = IPAddress.objects.prefetch_related("tenant", "tags")
+#     serializer_class = PrometheusIPAddressSerializer
+#     filterset_class = IPAddressFilterSet
+#     pagination_class = None
